@@ -1,6 +1,6 @@
 #include <iostream>
 #include "classes/PetriDish.h"
-#include "../utils/Random.h"
+#include "utils/Random.h"
 
 
 int main(int argc, char** argv) {
