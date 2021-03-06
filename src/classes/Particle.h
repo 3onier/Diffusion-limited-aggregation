@@ -1,7 +1,7 @@
 #ifndef DLA_PARTICLE_H
 #define DLA_PARTICLE_H
 
-#include "../utils/Random.h"
+#include "../../utils/Random.h"
 
 class Particle {
 public:

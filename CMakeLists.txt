@@ -3,5 +3,5 @@ project(DLA)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(DLA main.cpp classes/PetriDish.h classes/PetriDish.cpp classes/Particle.h classes/Particle.cpp utils/Random.cpp utils/Random.h)
+add_executable(DLA src/main.cpp src/classes/PetriDish.h src/classes/PetriDish.cpp src/classes/Particle.h src/classes/Particle.cpp src/utils/Random.cpp src/utils/Random.h)
 #add_subdirectory(classes)
