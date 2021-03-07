@@ -6,7 +6,7 @@
 
 namespace Random{
     static std::default_random_engine gen;
-    static std::uniform_int_distribution<int> dist(0,50);
+    static std::uniform_int_distribution<int> dist(0,std::numeric_limits<int>::max());
 
     void init(int seed);
     int randInt(int min, int max);

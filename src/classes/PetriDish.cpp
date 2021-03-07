@@ -101,18 +101,30 @@ void PetriDish::addFixedIndex() {
 bool PetriDish::isCollision(Particle a) const {
     //set Particle
     Particle* b = nullptr;
-    //check if particle is in another. if yes abort and return false
-    for (int i = 0; i < this->getFixedIndex(); i++) {
-        if(this->particles[i].getX() == a.getX() && this->particles[i].getY() == a.getY()){
-            return false;
-        }
+    //check if particle is in another. if yes early return false
+    int index = a.y * this->width + a.x;
+    if(this->pParticleByPos[index] != nullptr){
+        return false;
     }
     double distance = 0;
-    for (int i = 0; i < this->getFixedIndex(); i++) {
-        b = &this->particles[i];
-        distance = sqrt(pow(a.getX() - b->getX(), 2.0) + pow(a.getY() - b->getY(), 2.0));
-        if(distance <= this->collisionRadius){
-            return true;
+    int add = static_cast<int>(ceil(collisionRadius)+2);
+    int minX = (a.x - add > 0) ? a.x - add : 0;
+    int minY = (a.y - add > 0) ? a.y - add : 0;
+    int maxX = (a.x + add < this->width) ? a.x + add : this->width;
+    int maxY = (a.y + add < this->height) ? a.y + add : this->height;
+    for (int x = minX; x <= maxX; ++x) {
+        for (int y = minY; y <= maxY; ++y) {
+            // test if max size isn't exceeded
+            if(this->width*y + x >= this->width*this->height){
+                break;
+            }
+            if(this->pParticleByPos[this->width*y + x] != nullptr){
+                b = this->pParticleByPos[this->width*y + x];
+                distance = sqrt(pow(b->x - a.x, 2) + pow(b->y - a.y, 2));
+                if(distance <= this->collisionRadius){
+                    return true;
+                }
+            }
         }
     }
     return false;
