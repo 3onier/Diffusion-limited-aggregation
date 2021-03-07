@@ -8,15 +8,17 @@ public:
     int x; ///< x-position of the particle
     int y; ///< y-position of the particle
 
-    int upperWidth = 0; ///< the maximum x-position a particle can move to
-    int upperHeight = 0; ///< the maximum y-position a particle can move to
+    int minX = 0; ///< the minimum x-position a particle can be
+    int minY = 0; ///< the minimum y-position a particle can be
+    int maxX = 0; ///< the maximum x-position a particle can be
+    int maxY = 0; ///< the maximum y-position a particle can be
 
     bool isFixed = false; ///< flag weather particle is a fixed or not
 
     Particle();
     Particle(int x, int y, int upperWidth, int upperHeight);
 
-    void setBoundaries(int width, int height);
+    void setBoundaries(int minX, int minY, int maxX, int maxY);
 
     /// @description sets the particle to fixed
     void fix();

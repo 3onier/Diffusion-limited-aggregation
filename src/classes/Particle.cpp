@@ -8,13 +8,15 @@ Particle::Particle() {
 Particle::Particle(int x, int y,int upperWidth,int upperHeight) {
     this->x = x;
     this->y = y;
-    this->upperHeight = upperHeight;
-    this->upperWidth = upperWidth;
+    this->maxY = upperHeight;
+    this->maxX = upperWidth;
 }
 
-void Particle::setBoundaries(int width, int height) {
-    this->upperWidth = width;
-    this->upperHeight = height;
+void Particle::setBoundaries(int minX, int minY, int maxX, int maxY){
+    this->maxX = maxX;
+    this->maxY = maxY;
+    this->minX = minX;
+    this->minY = minY;
 }
 
 void Particle::fix() {
@@ -31,18 +33,18 @@ void Particle::move() {
     long int tempY = this->getY() + Random::randInt(-1,1);
 
     //check and reset to boundaries
-    if(tempX < 0){
-        this->setX(0);
-    }else if(tempX > this->getUpperWidth()){
-        this->setX(this->getUpperWidth());
+    if(tempX < this->minX){
+        this->setX(minX);
+    }else if(tempX > this->maxX){
+        this->setX(this->maxX);
     } else{
         this->setX(tempX);
     }
 
-    if(tempY < 0){
-        this->setY(0);
-    }else if(tempY > this->getUpperHeight()){
-        this->setY(this->getUpperHeight());
+    if(tempY < this->minY){
+        this->setY(minY);
+    }else if(tempY > this->maxY){
+        this->setY(this->maxY);
     } else{
         this->setY(tempY);
     }
@@ -71,17 +73,17 @@ int Particle::getY() {
 }
 
 int Particle::getUpperWidth() const {
-    return upperWidth;
+    return maxX;
 }
 
 int Particle::getUpperHeight() const {
-    return upperHeight;
+    return maxY;
 }
 
 void Particle::setUpperHeight(int upperHeight) {
-    Particle::upperHeight = upperHeight;
+    Particle::maxY = upperHeight;
 }
 
 void Particle::setUpperWidth(int upperWidth) {
-    Particle::upperWidth = upperWidth;
+    Particle::maxX = upperWidth;
 }

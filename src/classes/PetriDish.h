@@ -3,7 +3,6 @@
 #define DLA_PETRIDISH_H
 
 #include<iostream>
-#include<math.h>
 #include "Particle.h"
 
 /// @description Class containing the Particles and running the simulation
@@ -56,8 +55,8 @@ public:
 
     void printParticleByPos();
 
-    /// @description map all positions in the square to the corresponding particle for collision detection optimization
-    void fillCollisionSquare(int x, int y);
+    /// @description Sets particle boundaries for optimization
+    void setParticleBoundaries(Particle* part);
 
 };
 

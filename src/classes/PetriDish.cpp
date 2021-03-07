@@ -16,7 +16,7 @@ PetriDish::PetriDish(int amount,
 
     //Set boundaries of all particles to the boundaries of petri dish
     for(int i = 0; i < this->amount; i++){
-        this->particles[i].setBoundaries(this->width, this->height);
+        this->particles[i].setBoundaries(0, 0, this->width, this->height);
     }
 
     //index of particle by position
@@ -56,13 +56,8 @@ void PetriDish::debugPrintFixed() {
 }
 
 void PetriDish::printParticleByPos() {
-    std::cout << this->width << " " << this->height << " ";
-    for (int i = 0; i < this->width*this->height; ++i) {
-        if (this->pParticleByPos[i] == NULL){
-            std::cout << "0 ";
-        }else{
-            std::cout << "1 ";
-        }
+    for (int i = 0; i < this->getFixedIndex(); ++i) {
+        std::cout << this->particles[i].x << " " << this->particles[i].y << std::endl;
     }
 }
 
@@ -71,6 +66,7 @@ void PetriDish::runSingle(int index) {
     Particle* part = &this->particles[index];
     //give Random Position
     part->setPosition(Random::randInt(0, this->width),Random::randInt(0, this->height));
+    this->setParticleBoundaries(part);
     while(true) {
         part->move();
         //std::cout << part->getX() << " " << part->getY() << std::endl;
@@ -120,4 +116,31 @@ bool PetriDish::isCollision(Particle a) const {
         }
     }
     return false;
+}
+
+void PetriDish::setParticleBoundaries(Particle *part) {
+    int minX = this->width;
+    int maxX = 0;
+    int minY = this->height;
+    int maxY = 0;
+
+    for (int i = 0; i < this->getFixedIndex(); ++i) {
+        minX = std::min(minX, this->particles[i].x);
+        minY = std::min(minY, this->particles[i].y);
+        maxX = std::max(maxX, this->particles[i].x);
+        maxY = std::max(maxY, this->particles[i].y);
+    }
+    // some arbitrary value the boundaries should be padding
+    int add = 10;
+    // Add ceil(collision radius) to the padding
+    add += static_cast<int>(ceil(this->collisionRadius));
+
+    // set boundary to new calculated or if it exceeds petri dish to its boundaries
+    minX = (minX - add > 0) ? minX - add : 0;
+    minY = (minY - add > 0) ? minY - add : 0;
+    maxX = (maxX + add < this->width) ? maxX + add : this->width;
+    maxY = (maxY + add < this->height) ? maxY + add : this->height;
+
+    part->setBoundaries(minX, minY, maxX, maxY);
+
 }
