@@ -56,13 +56,8 @@ void PetriDish::debugPrintFixed() {
 }
 
 void PetriDish::printParticleByPos() {
-    std::cout << this->width << " " << this->height << " ";
-    for (int i = 0; i < this->width*this->height; ++i) {
-        if (this->pParticleByPos[i] == NULL){
-            std::cout << "0 ";
-        }else{
-            std::cout << "1 ";
-        }
+    for (int i = 0; i < this->getFixedIndex(); ++i) {
+        std::cout << this->particles[i].x << " " << this->particles[i].y << std::endl;
     }
 }
 

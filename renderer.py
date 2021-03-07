@@ -8,20 +8,9 @@ list_y = []
 inp = ""
 
 for s in sys.stdin:
-    inp += s
-
-
-i = 0
-inp = inp.split()
-for s in inp:
-    if i == 0:
-        height = int(s)
-    elif i == 1:
-        width = int(s)
-    elif int(s):
-        list_y.append((i - 2) // width)
-        list_x.append((i - 2) % width)
-    i += 1
+    x, y = s.split()
+    list_x.append(int(x))
+    list_y.append(int(y))
 
 plt.scatter(list_x, list_y)
 plt.show()
