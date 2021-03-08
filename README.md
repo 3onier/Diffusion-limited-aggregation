@@ -8,7 +8,8 @@ I created with a friend for my University.
 
 - [CMake](https://cmake.org/) >= v3.17
 - [Python]() >= 3.9.2
-- [matplotlib](https://matplotlib.org/) >= 3.3.4
+- [Pipenv](https://pypi.org/project/pipenv/)
+- [matplotlib](https://matplotlib.org/) >= 3.3.4 (optional if you dont have pipenv)
 
 ## Installation
 
@@ -17,11 +18,17 @@ I created with a friend for my University.
 # get git repository
 git clone https://github.com/3onier/Diffusion-limited-aggregation
 
+# change directory
+cd Diffusion-limited-aggregation
+
 # create make file
 cmake .
 
 # build project
 make 
+
+# generate python virtual environment
+pipenv install
 ````
 
 ### Windows
@@ -35,5 +42,5 @@ Work in Progress
 ## Usage
 
 ````
-./DLA [amount] [heigt] [width] [collision radius] [init x] [init y] [seed] | python renderer.py
+./DLA [amount] [heigt] [width] [collision radius] [init x] [init y] [seed] | pipenv run renderer
 ````
