@@ -21,6 +21,12 @@ public:
     int height; ///< height of the grid
     float collisionRadius; ///< the minimum distance for a collision
 
+    // dynamic boundary
+    int dynMinX = 0;
+    int dynMaxX = 0;
+    int dynMinY = 0;
+    int dynMaxY = 0;
+
     PetriDish(int amount, ///< Amount of Particles to be simulated
               int height, ///< height of the grid
               int width, ///< width of the grid
@@ -57,6 +63,10 @@ public:
 
     /// @description Sets particle boundaries for optimization
     void setParticleBoundaries(Particle* part);
+
+    void generateDynamicBoundaries();
+
+    void updateDynamicBoundaries(Particle* part);
 
 };
 

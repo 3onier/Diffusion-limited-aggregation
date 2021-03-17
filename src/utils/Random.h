@@ -5,7 +5,8 @@
 #include <math.h>
 
 namespace Random{
-    static std::default_random_engine gen;
+    static std::mt19937_64 gen;
+    //static std::random_device gen;
     static std::uniform_int_distribution<int> dist(0,std::numeric_limits<int>::max());
 
     void init(int seed);

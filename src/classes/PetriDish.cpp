@@ -34,6 +34,9 @@ PetriDish::PetriDish(int amount,
     int collision_square_side_len = 2*static_cast<int>(ceil(collisionRadius)) + 1;
     this->collisionSquareSideLen = collision_square_side_len;
     int size = collision_square_side_len*collision_square_side_len;
+
+    //generate dynamic boundaries
+    this->generateDynamicBoundaries();
 }
 
 void PetriDish::cleanup() {
@@ -75,6 +78,7 @@ void PetriDish::runSingle(int index) {
             this->addFixedIndex();
             //save index
             this->pParticleByPos[part->getY()*this->width + part->getX()] = &this->particles[index];
+            this->updateDynamicBoundaries(part);
             return;
         }
     }
@@ -131,6 +135,15 @@ bool PetriDish::isCollision(Particle a) const {
 }
 
 void PetriDish::setParticleBoundaries(Particle *part) {
+    part->setBoundaries(
+            this->dynMinX,
+            this->dynMinY,
+            this->dynMaxX,
+            this->dynMaxY
+            );
+}
+
+void PetriDish::generateDynamicBoundaries() {
     int minX = this->width;
     int maxX = 0;
     int minY = this->height;
@@ -153,6 +166,36 @@ void PetriDish::setParticleBoundaries(Particle *part) {
     maxX = (maxX + add < this->width) ? maxX + add : this->width;
     maxY = (maxY + add < this->height) ? maxY + add : this->height;
 
-    part->setBoundaries(minX, minY, maxX, maxY);
+    this->dynMinX = minX;
+    this->dynMaxX = maxX;
+    this->dynMinY = minY;
+    this->dynMaxY = maxX;
+}
 
+void PetriDish::updateDynamicBoundaries(Particle *part) {
+    // some arbitrary value the boundaries should be padding
+    int add = 10;
+    // Add ceil(collision radius) to the padding
+    add += static_cast<int>(ceil(this->collisionRadius));
+
+    int minX = this->dynMinX + add;
+    int maxX = this->dynMaxX - add;
+    int minY = this->dynMinX + add;
+    int maxY = this->dynMaxY - add;
+
+    minX = std::min(minX, part->x);
+    minY = std::min(minY, part->y);
+    maxX = std::max(maxX, part->x);
+    maxY = std::max(maxY, part->y);
+
+    // set boundary to new calculated or if it exceeds petri dish to its boundaries
+    minX = (minX - add > 0) ? minX - add : 0;
+    minY = (minY - add > 0) ? minY - add : 0;
+    maxX = (maxX + add < this->width) ? maxX + add : this->width;
+    maxY = (maxY + add < this->height) ? maxY + add : this->height;
+
+    this->dynMinX = minX;
+    this->dynMinY = minY;
+    this->dynMaxX = maxX;
+    this->dynMaxY = maxY;
 }
