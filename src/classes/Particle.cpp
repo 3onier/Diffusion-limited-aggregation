@@ -12,11 +12,17 @@ Particle::Particle(int x, int y,int upperWidth,int upperHeight) {
     this->maxX = upperWidth;
 }
 
-void Particle::setBoundaries(int minX, int minY, int maxX, int maxY){
+void Particle::setRectBoundaries(int minX, int minY, int maxX, int maxY){
     this->maxX = maxX;
     this->maxY = maxY;
     this->minX = minX;
     this->minY = minY;
+}
+
+void Particle::setCircBoundaries(int midX, int midY, int radius) {
+    this->midX = midX;
+    this->midY = midY;
+    this->borderRadius = radius;
 }
 
 void Particle::fix() {
@@ -32,7 +38,16 @@ void Particle::move() {
     long int tempX = this->getX() + Random::randInt(-1,1);
     long int tempY = this->getY() + Random::randInt(-1,1);
 
-    //check and reset to boundaries
+    // calculate distance and angle
+    double distance = sqrt(pow(tempY - this->midY, 2) + pow(tempX - this->midX, 2));
+    double angle = acos((tempY - this->midY)/distance);
+
+    if(distance > this->borderRadius){
+        tempX = static_cast<int>(distance*cos(angle)) + this->midX;
+        tempY = static_cast<int>(distance*sin(angle)) + this->midY;
+    }
+
+    //check and reset to rectangular boundaries
     if(tempX < this->minX){
         this->setX(minX);
     }else if(tempX > this->maxX){

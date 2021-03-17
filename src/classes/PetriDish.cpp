@@ -16,7 +16,7 @@ PetriDish::PetriDish(int amount,
 
     //Set boundaries of all particles to the boundaries of petri dish
     for(int i = 0; i < this->amount; i++){
-        this->particles[i].setBoundaries(0, 0, this->width, this->height);
+        this->particles[i].setRectBoundaries(0, 0, this->width, this->height);
     }
 
     //index of particle by position
@@ -135,67 +135,60 @@ bool PetriDish::isCollision(Particle a) const {
 }
 
 void PetriDish::setParticleBoundaries(Particle *part) {
-    part->setBoundaries(
-            this->dynMinX,
-            this->dynMinY,
-            this->dynMaxX,
-            this->dynMaxY
+    part->setRectBoundaries(0, 0, this->width, this->height);
+    part->setCircBoundaries(
+            this->midX,
+            this->midY,
+            this->borderRadius
             );
 }
 
 void PetriDish::generateDynamicBoundaries() {
-    int minX = this->width;
     int maxX = 0;
-    int minY = this->height;
     int maxY = 0;
+    int minX = this->width;
+    int minY = this->height;
+    int avgX = 0;
+    int avgY = 0;
 
+    // get minimum and maximum of each coordinate and sum up for averaging
     for (int i = 0; i < this->getFixedIndex(); ++i) {
-        minX = std::min(minX, this->particles[i].x);
-        minY = std::min(minY, this->particles[i].y);
         maxX = std::max(maxX, this->particles[i].x);
         maxY = std::max(maxY, this->particles[i].y);
+        minX = std::min(minX, this->particles[i].x);
+        minY = std::min(minY, this->particles[i].y);
+        avgX += this->particles[i].x;
+        avgY += this->particles[i].y;
     }
-    // some arbitrary value the boundaries should be padding
-    int add = 10;
-    // Add ceil(collision radius) to the padding
-    add += static_cast<int>(ceil(this->collisionRadius));
 
-    // set boundary to new calculated or if it exceeds petri dish to its boundaries
-    minX = (minX - add > 0) ? minX - add : 0;
-    minY = (minY - add > 0) ? minY - add : 0;
-    maxX = (maxX + add < this->width) ? maxX + add : this->width;
-    maxY = (maxY + add < this->height) ? maxY + add : this->height;
+    // get average
+    avgX /= getFixedIndex();
+    avgY /= getFixedIndex();
 
-    this->dynMinX = minX;
-    this->dynMaxX = maxX;
-    this->dynMinY = minY;
-    this->dynMaxY = maxX;
+    // get furthest particle from average point
+    int x = std::max(
+            std::abs(avgX - maxX),
+            std::abs(avgX - minX)
+            );
+    // get furthest particle from average point
+    int y = std::max(
+            std::abs(avgY - maxY),
+            std::abs(avgY - minY)
+    );
+
+    int radius = static_cast<int>(ceil(sqrt(x*x + y*y))) + BORDER_PADDING;
+
+    this->borderRadius = radius;
+    this->midX = avgX;
+    this->midY = avgY;
 }
 
 void PetriDish::updateDynamicBoundaries(Particle *part) {
-    // some arbitrary value the boundaries should be padding
-    int add = 10;
-    // Add ceil(collision radius) to the padding
-    add += static_cast<int>(ceil(this->collisionRadius));
+    int x = abs(this->midX - part->x);
+    int y = abs(this->midY - part->y);
 
-    int minX = this->dynMinX + add;
-    int maxX = this->dynMaxX - add;
-    int minY = this->dynMinX + add;
-    int maxY = this->dynMaxY - add;
-
-    minX = std::min(minX, part->x);
-    minY = std::min(minY, part->y);
-    maxX = std::max(maxX, part->x);
-    maxY = std::max(maxY, part->y);
-
-    // set boundary to new calculated or if it exceeds petri dish to its boundaries
-    minX = (minX - add > 0) ? minX - add : 0;
-    minY = (minY - add > 0) ? minY - add : 0;
-    maxX = (maxX + add < this->width) ? maxX + add : this->width;
-    maxY = (maxY + add < this->height) ? maxY + add : this->height;
-
-    this->dynMinX = minX;
-    this->dynMinY = minY;
-    this->dynMaxX = maxX;
-    this->dynMaxY = maxY;
+    this->borderRadius = std::max(
+            this->borderRadius - BORDER_PADDING,
+            static_cast<int>(ceil(sqrt(x*x + y*y)))
+            ) + BORDER_PADDING;
 }
