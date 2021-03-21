@@ -5,6 +5,8 @@
 #include<iostream>
 #include "Particle.h"
 
+#define BORDER_PADDING 1
+
 /// @description Class containing the Particles and running the simulation
 class PetriDish {
 public:
@@ -26,6 +28,11 @@ public:
     int dynMaxX = 0;
     int dynMinY = 0;
     int dynMaxY = 0;
+
+    // dynamic boundaries
+    int midX = 0;
+    int midY = 0;
+    int borderRadius = 0;
 
     PetriDish(int amount, ///< Amount of Particles to be simulated
               int height, ///< height of the grid

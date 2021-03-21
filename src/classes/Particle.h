@@ -2,6 +2,7 @@
 #define DLA_PARTICLE_H
 
 #include "../utils/Random.h"
+#include <math.h>
 
 class Particle {
 public:
@@ -13,12 +14,18 @@ public:
     int maxX = 0; ///< the maximum x-position a particle can be
     int maxY = 0; ///< the maximum y-position a particle can be
 
+    int midX = 0;
+    int midY = 0;
+    int borderRadius = 0;
+
     bool isFixed = false; ///< flag weather particle is a fixed or not
 
     Particle();
     Particle(int x, int y, int upperWidth, int upperHeight);
 
-    void setBoundaries(int minX, int minY, int maxX, int maxY);
+    void setRectBoundaries(int minX, int minY, int maxX, int maxY);
+
+    void setCircBoundaries(int midX, int midY, int radius);
 
     /// @description sets the particle to fixed
     void fix();
