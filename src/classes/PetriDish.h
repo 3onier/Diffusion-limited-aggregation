@@ -5,7 +5,7 @@
 #include<iostream>
 #include "Particle.h"
 
-#define BORDER_PADDING 10
+#define BORDER_PADDING 1
 
 /// @description Class containing the Particles and running the simulation
 class PetriDish {
