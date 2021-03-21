@@ -20,6 +20,8 @@ public:
 
     bool isFixed = false; ///< flag weather particle is a fixed or not
 
+    unsigned long int moves = 0; ///< amount of moves the particle made
+
     Particle();
     Particle(int x, int y, int upperWidth, int upperHeight);
 

@@ -67,6 +67,7 @@ void Particle::move() {
         this->setY(tempY);
     }
 
+    this->moves++;
 }
 
 void Particle::setPosition(int x,int y) {

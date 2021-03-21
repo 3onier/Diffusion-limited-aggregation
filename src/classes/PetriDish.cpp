@@ -87,13 +87,15 @@ void PetriDish::runSingle(int index) {
 void PetriDish::runAll(bool print) {
     if(print){
         for (int i = 0; i < this->getFixedIndex(); ++i) {
-            std::cout << i << " " << this->particles[i].getX() << " " << this->particles[i].getY() << std::endl;
+            std::cout << i << " " << this->particles[i].getX() << " " << this->particles[i].getY() <<
+            " " << this->particles[i].moves << std::endl;
         }
     }
     for (int i = this->getFixedIndex(); i < this->amount; i++) {
         this->runSingle(i);
         if(print){
-            std::cout << i << " " << this->particles[i].getX() << " " << this->particles[i].getY() << std::endl;
+            std::cout << i << " " << this->particles[i].getX() << " "
+            << this->particles[i].getY() << " " << this->particles[i].moves << std::endl;
         }
     }
 }
