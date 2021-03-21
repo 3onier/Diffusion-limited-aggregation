@@ -40,11 +40,14 @@ void Particle::move() {
 
     // calculate distance and angle
     double distance = sqrt(pow(tempY - this->midY, 2) + pow(tempX - this->midX, 2));
-    double angle = acos((tempY - this->midY)/distance);
+    double angle = atan2(
+            tempX - this->midX,
+            tempY - this->midY
+            );
 
     if(distance > this->borderRadius){
-        tempX = static_cast<int>(distance*cos(angle)) + this->midX;
-        tempY = static_cast<int>(distance*sin(angle)) + this->midY;
+        tempX = static_cast<int>(this->borderRadius*cos(angle)) + this->midX;
+        tempY = static_cast<int>(this->borderRadius*sin(angle)) + this->midY;
     }
 
     //check and reset to rectangular boundaries
