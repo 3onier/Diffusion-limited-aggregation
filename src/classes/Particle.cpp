@@ -41,8 +41,8 @@ void Particle::move() {
     // calculate distance and angle
     double distance = sqrt(pow(tempY - this->midY, 2) + pow(tempX - this->midX, 2));
     double angle = atan2(
-            tempX - this->midX,
-            tempY - this->midY
+            tempY - this->midY,
+            tempX - this->midX
             );
 
     if(distance > this->borderRadius){
