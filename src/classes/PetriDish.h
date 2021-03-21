@@ -48,7 +48,7 @@ public:
             );
 
     /// @description runs the simulation for all Particles
-    void runAll();
+    void runAll(bool print = false);
 
     /// @description deletes all allocated memory
     void cleanup();

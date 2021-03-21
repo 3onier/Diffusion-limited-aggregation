@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
             atoi(argv[5]),
             atoi(argv[6])
             );
-    test.runAll();
-    test.printParticleByPos();
+    test.runAll(true);
+    //test.printParticleByPos();
     return 0;
 }

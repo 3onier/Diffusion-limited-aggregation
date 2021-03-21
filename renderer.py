@@ -6,8 +6,8 @@ list_x = []
 list_y = []
 init_x, init_y = 0, 0
 
-for i, s in enumerate(sys.stdin):
-    x, y = map(int, s.split())
+for s in sys.stdin:
+    i, x, y = map(int, s.split())
     if i == 0:
         init_x, init_y = x, y
         continue
